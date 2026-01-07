@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useGame } from '@/context/GameContext';
 import { getLeaderboard, ScoreEntry } from '@/lib/db';
 
@@ -33,40 +34,35 @@ export default function Leaderboard() {
                 {loading ? (
                     <div className="text-center text-neon-blue animate-pulse">TRANSMITTING DATA...</div>
                 ) : (
-import Image from 'next/image';
-                // ... (imports)
-
-                // ... (fetch logic same)
-
-                <div className="space-y-4">
-                    <div className="grid grid-cols-4 text-neon-pink font-mono text-sm border-b border-gray-700 pb-2">
-                        <span className="col-span-1">RANK</span>
-                        <span className="col-span-2">PILOT</span>
-                        <span className="col-span-1 text-right">SCORE</span>
-                    </div>
-                    {scores.map((entry, index) => (
-                        <div key={entry.id} className="grid grid-cols-4 font-mono text-white text-lg items-center hover:bg-white/5 p-2 rounded transition-colors">
-                            <span className="col-span-1 text-gray-400">#{index + 1}</span>
-                            <div className="col-span-2 flex items-center gap-3 overflow-hidden">
-                                {entry.pfpUrl ? (
-                                    <Image src={entry.pfpUrl} alt="PFP" width={24} height={24} className="rounded-full flex-shrink-0" />
-                                ) : (
-                                    <div className="w-6 h-6 rounded-full bg-gray-700 flex-shrink-0" />
-                                )}
-                                <span className="truncate" title={entry.username || entry.walletAddress}>
-                                    {entry.username || `${entry.walletAddress.slice(0, 4)}...${entry.walletAddress.slice(-4)}`}
+                    <div className="space-y-4">
+                        <div className="grid grid-cols-4 text-neon-pink font-mono text-sm border-b border-gray-700 pb-2">
+                            <span className="col-span-1">RANK</span>
+                            <span className="col-span-2">PILOT</span>
+                            <span className="col-span-1 text-right">SCORE</span>
+                        </div>
+                        {scores.map((entry, index) => (
+                            <div key={entry.id} className="grid grid-cols-4 font-mono text-white text-lg items-center hover:bg-white/5 p-2 rounded transition-colors">
+                                <span className="col-span-1 text-gray-400">#{index + 1}</span>
+                                <div className="col-span-2 flex items-center gap-3 overflow-hidden">
+                                    {entry.pfpUrl ? (
+                                        <Image src={entry.pfpUrl} alt="PFP" width={24} height={24} className="rounded-full flex-shrink-0" />
+                                    ) : (
+                                        <div className="w-6 h-6 rounded-full bg-gray-700 flex-shrink-0" />
+                                    )}
+                                    <span className="truncate" title={entry.username || entry.walletAddress}>
+                                        {entry.username || `${entry.walletAddress.slice(0, 4)}...${entry.walletAddress.slice(-4)}`}
+                                    </span>
+                                </div>
+                                <span className="col-span-1 text-right text-neon-green font-bold">
+                                    {entry.score.toLocaleString()}
                                 </span>
                             </div>
-                            <span className="col-span-1 text-right text-neon-green font-bold">
-                                {entry.score.toLocaleString()}
-                            </span>
-                        </div>
-                    ))}
+                        ))}
 
-                    {scores.length === 0 && (
-                        <div className="text-center text-gray-500 py-8">NO FLIGHT RECORDS FOUND</div>
-                    )}
-                </div>
+                        {scores.length === 0 && (
+                            <div className="text-center text-gray-500 py-8">NO FLIGHT RECORDS FOUND</div>
+                        )}
+                    </div>
                 )}
             </div>
 

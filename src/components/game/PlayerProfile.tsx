@@ -1,12 +1,38 @@
-import Image from 'next/image';
+'use client';
 
-// ... (existing imports)
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import { useGame } from '@/context/GameContext';
+import { useAccount } from 'wagmi';
+import { getUserProfile, UserProfile } from '@/lib/db';
 
 export default function PlayerProfile() {
-    // ... (existing hooks)
+    const { setGameState } = useGame();
+    const { address } = useAccount();
+    const [profile, setProfile] = useState<UserProfile | null>(null);
+    const [loading, setLoading] = useState(true);
 
-    // ... (existing return)
-    
+    useEffect(() => {
+        const fetchProfile = async () => {
+            if (address) {
+                try {
+                    const data = await getUserProfile(address);
+                    setProfile(data);
+                } catch (error) {
+                    console.error("Error fetching profile", error);
+                }
+            }
+            setLoading(false);
+        };
+        fetchProfile();
+    }, [address]);
+
+    return (
+        <div className="flex flex-col items-center justify-center min-h-screen z-10 relative p-8">
+            <h2 className="text-4xl font-bold text-neon-pink mb-8 tracking-widest drop-shadow-[0_0_10px_rgba(188,19,254,0.8)]">
+                PILOT DOSSIER
+            </h2>
+
             <div className="w-full max-w-md bg-black/60 border border-neon-pink/30 rounded-xl p-8 backdrop-blur-md shadow-[0_0_30px_rgba(0,0,0,0.5)]">
                 {!address ? (
                     <div className="text-center text-gray-400">WALLET DISCONNECTED</div>
@@ -15,16 +41,16 @@ export default function PlayerProfile() {
                 ) : (
                     <div className="space-y-6 font-mono">
                         <div className="text-center mb-6 flex flex-col items-center">
-                             {profile?.pfpUrl ? (
+                            {profile?.pfpUrl ? (
                                 <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-neon-pink mb-4 shadow-[0_0_20px_rgba(188,19,254,0.5)]">
                                     <Image src={profile.pfpUrl} alt="Profile" width={96} height={96} className="w-full h-full object-cover" />
                                 </div>
-                             ) : (
+                            ) : (
                                 <div className="w-24 h-24 rounded-full bg-gray-800 border-4 border-gray-600 mb-4 flex items-center justify-center">
                                     <span className="text-3xl">🚀</span>
                                 </div>
-                             )}
-                            
+                            )}
+
                             <div className="text-xl text-white font-bold">{profile?.username || "Unknown Pilot"}</div>
                             <div className="text-xs text-gray-500 uppercase tracking-widest mt-1">{address.slice(0, 6)}...{address.slice(-4)}</div>
                         </div>
@@ -56,6 +82,6 @@ export default function PlayerProfile() {
             >
                 RETURN TO BASE
             </button>
-        </div >
+        </div>
     );
 }
