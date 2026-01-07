@@ -1,0 +1,22 @@
+
+> galactic-warp@0.1.0 lint
+> eslint
+
+
+C:\Users\diana\Documents\Dev Projects\MiniApp\GalaticWarp\galactic-warp\src\components\game\GameCanvas.tsx
+   77:19  warning  'dt' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       @typescript-eslint/no-unused-vars
+  189:29  error    Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\diana\Documents\Dev Projects\MiniApp\GalaticWarp\galactic-warp\src\components\game\GameCanvas.tsx:189:29
+  187 |                 <div>LIVES: {lives}</div>
+  188 |                 <div>SCORE: {score}</div>
+> 189 |                 <div>WAVE: {waveRef.current}</div>
+      |                             ^^^^^^^^^^^^^^^ Cannot access ref value during render
+  190 |                 <div>MISSION: {mission}</div>
+  191 |             </div>
+  192 |             <canvas  react-hooks/refs
+
+✖ 2 problems (1 error, 1 warning)
+
