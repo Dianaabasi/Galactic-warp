@@ -23,7 +23,7 @@ export default function GameContainer() {
                 <h1 className="text-6xl font-black text-red-500 mb-8 tracking-widest drop-shadow-[0_0_20px_rgba(255,0,0,0.8)]">GAME OVER</h1>
                 <button
                     onClick={resetGame}
-                    className="px-8 py-4 bg-neon-blue text-black rounded-full font-bold hover:scale-105 transition-all shadow-[0_0_20px_rgba(0,243,255,0.6)]"
+                    className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-full font-bold hover:bg-white hover:text-black hover:scale-105 transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)]"
                 >
                     HOME
                 </button>
