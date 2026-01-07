@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { OnchainProviders } from "@/components/OnchainProviders";
 import "@coinbase/onchainkit/styles.css";
+import FarcasterProvider from "@/components/FarcasterProvider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -33,6 +34,8 @@ export const metadata: Metadata = {
   },
 };
 
+
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -43,9 +46,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <OnchainProviders>
-          {children}
-        </OnchainProviders>
+        <FarcasterProvider>
+          <OnchainProviders>
+            {children}
+          </OnchainProviders>
+        </FarcasterProvider>
       </body>
     </html>
   );
