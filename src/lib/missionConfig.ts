@@ -1,3 +1,4 @@
+
 // Mission Configuration
 
 import { MissionConfig } from './gameTypes';
@@ -13,7 +14,7 @@ export const MISSIONS: Record<number, MissionConfig> = {
         enemyLaser: ASSETS.lasers.blue,
         enemySpeed: 1.5,
         enemySpawnRate: 2500,
-        enemyShootChance: 0, // Enemies don't shoot in Mission 1
+        enemyShootChance: 0.05, // 5% chance to shoot (slow, easy mode)
         hasMeteors: false,
         meteorSpawnRate: 0,
         hasBoss: false,
