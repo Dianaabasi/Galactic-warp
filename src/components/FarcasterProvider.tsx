@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect, useState, createContext, useContext } from 'react';
-import sdk, { type FrameContext } from '@farcaster/frame-sdk';
+import sdk from '@farcaster/frame-sdk';
 
 interface FarcasterContextType {
     isSDKLoaded: boolean;
-    context?: FrameContext;
+    context?: Awaited<typeof sdk.context>;
     user?: {
         fid: number;
         username?: string;
@@ -18,7 +18,7 @@ const FarcasterContext = createContext<FarcasterContextType | undefined>(undefin
 
 export default function FarcasterProvider({ children }: { children: React.ReactNode }) {
     const [isSDKLoaded, setIsSDKLoaded] = useState(false);
-    const [context, setContext] = useState<FrameContext>();
+    const [context, setContext] = useState<Awaited<typeof sdk.context>>();
 
     useEffect(() => {
         const load = async () => {
