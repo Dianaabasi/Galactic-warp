@@ -15,22 +15,31 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const appUrl = process.env.NEXT_PUBLIC_URL || "https://galactic-warp.vercel.app";
+
 export const metadata: Metadata = {
   title: "Galactic Warp",
   description: "A Farcaster Mini-App Space Shooter on Base",
   openGraph: {
     title: "Galactic Warp",
     description: "Play the ultimate space shooter on Base. Mint tickets, blast enemies, and top the leaderboard.",
-    images: ["/opengraph-image.png"], // Instructions: Add this image to public/
+    images: [`${appUrl}/opengraph-image.png`],
   },
   other: {
-    "fc:frame": "vNext",
-    "fc:frame:image": "https://galactic-warp.vercel.app/opengraph-image.png", // To be updated
-    // Button 1: Launch App (Frame v2 style)
-    "fc:frame:button:1": "Play Galactic Warp",
-    "fc:frame:button:1:action": "link",
-    "fc:frame:button:1:target": "https://galactic-warp.vercel.app", // To be updated
-    "fc:frame:post_url": "https://galactic-warp.vercel.app/api/frame", // Placeholder
+    "fc:frame": JSON.stringify({
+      version: "next",
+      imageUrl: `${appUrl}/opengraph-image.png`,
+      button: {
+        title: "Play Galactic Warp",
+        action: {
+          type: "launch_frame",
+          name: "Galactic Warp",
+          url: appUrl,
+          splashImageUrl: `${appUrl}/logo.png`,
+          splashBackgroundColor: "#050510",
+        },
+      },
+    }),
   },
 };
 

@@ -1,0 +1,17 @@
+{
+    "accountAssociation": {
+        "header": "eyJmaWQiOjExNzg4NjYsInR5cGUiOiJhdXRoIiwia2V5IjoiMHhFYTZhRDNiYzRhMDc2ZUMxN0MyQURBQUY1ODlCNkZFZWZENUY3QWVDIn0",
+        "payload": "eyJkb21haW4iOiJnYWxhY3RpYy13YXJwLnZlcmNlbC5hcHAifQ==",
+        "signature": "YOUR_GENERATED_SIGNATURE_HERE"
+    },
+    "frame": {
+        "version": "1",
+        "name": "Galactic Warp",
+        "iconUrl": "https://galactic-warp.vercel.app/logo.png",
+        "homeUrl": "https://galactic-warp.vercel.app",
+        "imageUrl": "https://galactic-warp.vercel.app/logo.png",
+        "buttonTitle": "Play Galactic Warp",
+        "splashImageUrl": "https://galactic-warp.vercel.app/logo.png",
+        "splashBackgroundColor": "#050510"
+    }
+}
