@@ -84,7 +84,7 @@ export default function LandingScreen() {
             </div>
 
             <div className="absolute bottom-20 text-gray-500 text-xs font-mono text-center">
-                POWERED BY BASE • FARCASTER
+                BUILT ON BASE • Dnoble.base.eth
             </div>
 
             <BottomNav />

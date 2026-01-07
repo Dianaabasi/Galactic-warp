@@ -5,6 +5,7 @@ import { useGame } from '@/context/GameContext';
 import { Player, Enemy, Bullet, Meteor, PowerUp, PowerUpType } from '@/lib/gameTypes';
 import { ASSETS, getImage, preloadMissionAssets, audioManager } from '@/lib/gameAssets';
 import { getMissionConfig } from '@/lib/missionConfig';
+import SpaceBackground from './SpaceBackground';
 
 // Constants
 const PLAYER_SPEED = 6;
@@ -337,7 +338,7 @@ export default function GameCanvas() {
                         bulletsRef.current.splice(bi, 1);
 
                         if (e.hp <= 0) {
-                            const points = e.type === 'boss' ? 500 : 100;
+                            const points = e.type === 'boss' ? 50 : 10;
                             addScore(points);
                             spawnPowerUp(e.x, e.y);
                             enemiesRef.current.splice(ei, 1);
@@ -495,6 +496,11 @@ export default function GameCanvas() {
 
     return (
         <div ref={containerRef} className="fixed inset-0 bg-black z-40">
+            {/* Space Background with blur */}
+            <div className="absolute inset-0 blur-sm opacity-50 z-0">
+                <SpaceBackground />
+            </div>
+
             {/* HUD */}
             <div className="absolute top-4 left-4 text-white font-mono z-50 bg-black/60 p-3 rounded-lg backdrop-blur-sm">
                 <div className="text-neon-green">LIVES: {lives}</div>
@@ -515,11 +521,11 @@ export default function GameCanvas() {
                 ref={canvasRef}
                 width={canvasSize.width}
                 height={canvasSize.height}
-                className="touch-none"
+                className="touch-none relative z-10"
             />
 
             {/* Mobile instructions */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-gray-500 text-xs font-mono md:hidden z-50">
+            <div className="absolute bottom-4 left-0 right-0 text-center text-gray-500 text-xs font-mono md:hidden z-50">
                 DRAG TO MOVE • AUTO-FIRE ENABLED
             </div>
         </div>
