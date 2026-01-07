@@ -20,7 +20,7 @@ const RAPID_FIRE_RATE = 6;
 export default function GameCanvas() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-    const { lives, score, addScore, takeDamage, mission, setGameState } = useGame();
+    const { lives, score, addScore, takeDamage, mission, exitGame } = useGame();
 
     // Canvas dimensions
     const [canvasSize, setCanvasSize] = useState({ width: 400, height: 600 });
@@ -510,7 +510,7 @@ export default function GameCanvas() {
 
             {/* Pause/Exit Button */}
             <button
-                onClick={() => setGameState('MENU')}
+                onClick={exitGame}
                 className="absolute top-4 right-4 z-50 px-4 py-2 bg-black/60 border border-white/30 text-white rounded-lg font-mono text-sm hover:bg-white/10"
             >
                 EXIT

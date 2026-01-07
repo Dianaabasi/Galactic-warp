@@ -18,6 +18,7 @@ interface GameContextType {
     takeDamage: () => void;
     resetGame: () => void;
     mintTicket: () => void;
+    exitGame: () => void;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -93,6 +94,18 @@ export function GameProvider({ children }: { children: ReactNode }) {
         setScore(0);
     };
 
+    const exitGame = async () => {
+        // Save score before exiting
+        if (address && score > 0) {
+            await saveGameResult(address, score, {
+                username: farcasterUser?.username,
+                pfpUrl: farcasterUser?.pfpUrl
+            });
+        }
+        setGameState('MENU');
+        setScore(0);
+    };
+
     return (
         <GameContext.Provider
             value={{
@@ -106,6 +119,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
                 takeDamage,
                 resetGame,
                 mintTicket,
+                exitGame,
             }}
         >
             {children}
