@@ -7,6 +7,8 @@ export interface UserProfile {
     highScore: number;
     gamesPlayed: number;
     lastPlayed: Timestamp | FieldValue | null;
+    username?: string;
+    pfpUrl?: string;
 }
 
 export interface ScoreEntry {
@@ -14,6 +16,8 @@ export interface ScoreEntry {
     walletAddress: string;
     score: number;
     timestamp: Timestamp | FieldValue | null;
+    username?: string;
+    pfpUrl?: string;
 }
 
 export const getUserProfile = async (walletAddress: string): Promise<UserProfile | null> => {
@@ -37,7 +41,7 @@ export const getUserProfile = async (walletAddress: string): Promise<UserProfile
     }
 };
 
-export const saveGameResult = async (walletAddress: string, score: number) => {
+export const saveGameResult = async (walletAddress: string, score: number, userDetails?: { username?: string, pfpUrl?: string }) => {
     if (!walletAddress) return;
     const userRef = doc(db, 'users', walletAddress);
     const scoreRef = collection(db, 'scores');
@@ -52,17 +56,24 @@ export const saveGameResult = async (walletAddress: string, score: number) => {
             const userData = userDoc.data() as UserProfile;
             const newHighScore = Math.max(userData.highScore, score);
 
-            transaction.update(userRef, {
+            const updateData: any = {
                 highScore: newHighScore,
                 gamesPlayed: userData.gamesPlayed + 1,
                 lastPlayed: serverTimestamp()
-            });
+            };
+
+            if (userDetails?.username) updateData.username = userDetails.username;
+            if (userDetails?.pfpUrl) updateData.pfpUrl = userDetails.pfpUrl;
+
+            transaction.update(userRef, updateData);
 
             const newScoreDoc = doc(scoreRef);
             transaction.set(newScoreDoc, {
                 walletAddress,
                 score,
-                timestamp: serverTimestamp()
+                timestamp: serverTimestamp(),
+                username: userDetails?.username || userData.username || null,
+                pfpUrl: userDetails?.pfpUrl || userData.pfpUrl || null
             });
         });
     } catch (e) {
@@ -71,7 +82,7 @@ export const saveGameResult = async (walletAddress: string, score: number) => {
 };
 
 export const getLeaderboard = async (): Promise<ScoreEntry[]> => {
-    const q = query(collection(db, 'scores'), orderBy('score', 'desc'), limit(10));
+    const q = query(collection(db, 'scores'), orderBy('score', 'desc'), limit(50)); // Increased limit
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map(doc => ({
         id: doc.id,

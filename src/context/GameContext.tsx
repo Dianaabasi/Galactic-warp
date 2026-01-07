@@ -79,46 +79,62 @@ export function GameProvider({ children }: { children: ReactNode }) {
         });
     };
 
-    const handleGameOver = async () => {
-        setGameState('GAME_OVER');
-        if (address) {
-            await saveGameResult(address, score);
-            // Sync 0 lives to DB to invalidate ticket
-            await addLives(address, 0);
-        }
-    };
+    import { useFarcaster } from '@/components/FarcasterProvider';
 
-    // Reset just takes back to Menu, preserving state mostly but likely re-fetching profile
-    const resetGame = () => {
-        setGameState('MENU');
-        setScore(0);
-        // Lives handled by fetch or manual reset if allowed
-    };
+    // ... (existing imports)
 
-    return (
-        <GameContext.Provider
-            value={{
-                gameState,
-                score,
-                lives,
-                mission,
-                setGameState,
-                startGame,
-                addScore,
-                takeDamage,
-                resetGame,
-                mintTicket,
-            }}
-        >
-            {children}
-        </GameContext.Provider>
-    );
-}
+    export function GameProvider({ children }: { children: ReactNode }) {
+        const { address } = useAccount();
+        const { user: farcasterUser } = useFarcaster() || {}; // Use hook, handle undefined check
+        // ... (existing state)
 
-export function useGame() {
-    const context = useContext(GameContext);
-    if (context === undefined) {
-        throw new Error('useGame must be used within a GameProvider');
+        // ... (existing useEffect)
+
+        // ... (existing functions: startGame, mintTicket, addScore, takeDamage)
+
+        const handleGameOver = async () => {
+            setGameState('GAME_OVER');
+            if (address) {
+                await saveGameResult(address, score, {
+                    username: farcasterUser?.username,
+                    pfpUrl: farcasterUser?.pfpUrl
+                });
+                // Sync 0 lives to DB to invalidate ticket
+                await addLives(address, 0);
+            }
+        };
+
+        // Reset just takes back to Menu, preserving state mostly but likely re-fetching profile
+        const resetGame = () => {
+            setGameState('MENU');
+            setScore(0);
+            // Lives handled by fetch or manual reset if allowed
+        };
+
+        return (
+            <GameContext.Provider
+                value={{
+                    gameState,
+                    score,
+                    lives,
+                    mission,
+                    setGameState,
+                    startGame,
+                    addScore,
+                    takeDamage,
+                    resetGame,
+                    mintTicket,
+                }}
+            >
+                {children}
+            </GameContext.Provider>
+        );
     }
-    return context;
-}
+
+    export function useGame() {
+        const context = useContext(GameContext);
+        if (context === undefined) {
+            throw new Error('useGame must be used within a GameProvider');
+        }
+        return context;
+    }

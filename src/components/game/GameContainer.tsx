@@ -25,7 +25,7 @@ export default function GameContainer() {
                     onClick={resetGame}
                     className="px-8 py-4 bg-neon-blue text-black rounded-full font-bold hover:scale-105 transition-all shadow-[0_0_20px_rgba(0,243,255,0.6)]"
                 >
-                    RETURN TO BASE
+                    HOME
                 </button>
             </div>;
         case 'VICTORY':
